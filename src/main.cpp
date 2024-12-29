@@ -8,42 +8,36 @@
  */
 
 // Enums for Configuration
-enum OutputMode { Throttle, VESC };   // Output options: PWM or VESC
-enum VoltageMode { Voltage3V3, Voltage5V }; // Voltage modes: 3.3V or 5V
+enum VoltageMode { Voltage3V3, Voltage5V };   // Voltage modes: 3.3V or 5V
 
 // User Configuration
-#define SELECTED_OUTPUT_MODE Throttle    // Options: Throttle, VESC
-#define SELECTED_VOLTAGE_MODE Voltage5V  // Options: Voltage3V3, Voltage5V
-#define USE_PROPORTIONAL 1 // Enable proportional assistance
+#define SELECTED_OUTPUT_MODE Throttle     // Options: Throttle, VESC
+#define SELECTED_VOLTAGE_MODE Voltage5V   // Options: Voltage3V3, Voltage5V
+#define USE_PROPORTIONAL 1                // Enable proportional assistance
 
 // Voltage-to-PWM Map
-const float SYSTEM_VOLTAGE_MAP[] = {3.3, 5.0};       // System voltage for each mode
-const float THROTTLE_MIN_VOLTAGE_MAP[] = {0.6, 0.8}; // Min throttle voltage for each mode
-const float THROTTLE_MAX_VOLTAGE_MAP[] = {2.8, 4.4}; // Max throttle voltage for each mode
+const float SYSTEM_VOLTAGE_MAP[] = {3.3, 5.0};          // System voltage for each mode
+const float THROTTLE_MIN_VOLTAGE_MAP[] = {0.6, 0.8};    // Min throttle voltage for each mode
+const float THROTTLE_MAX_VOLTAGE_MAP[] = {2.8, 4.4};    // Max throttle voltage for each mode
 
 // Derived Voltage Configuration
-const float SYSTEM_VOLTAGE = SYSTEM_VOLTAGE_MAP[SELECTED_VOLTAGE_MODE];
-const float THROTTLE_MIN_VOLTAGE = THROTTLE_MIN_VOLTAGE_MAP[SELECTED_VOLTAGE_MODE];
-const float THROTTLE_MAX_VOLTAGE = THROTTLE_MAX_VOLTAGE_MAP[SELECTED_VOLTAGE_MODE];
-const int PWM_MIN = int((THROTTLE_MIN_VOLTAGE / SYSTEM_VOLTAGE) * 255);
-const int PWM_MAX = int((THROTTLE_MAX_VOLTAGE / SYSTEM_VOLTAGE) * 255);
+const float SYSTEM_VOLTAGE = SYSTEM_VOLTAGE_MAP[SELECTED_VOLTAGE_MODE];               // Selected system voltage
+const float THROTTLE_MIN_VOLTAGE = THROTTLE_MIN_VOLTAGE_MAP[SELECTED_VOLTAGE_MODE];   // Min throttle voltage
+const float THROTTLE_MAX_VOLTAGE = THROTTLE_MAX_VOLTAGE_MAP[SELECTED_VOLTAGE_MODE];   // Max throttle voltage
+const int PWM_MIN = int((THROTTLE_MIN_VOLTAGE / SYSTEM_VOLTAGE) * 255);               // Minimum PWM value
+const int PWM_MAX = int((THROTTLE_MAX_VOLTAGE / SYSTEM_VOLTAGE) * 255);               // Maximum PWM value
 
 // PAS Configuration
-const int MAGNET_COUNT = 12;              // Number of magnets on PAS
-const int START_PULSES = 2;               // Minimum pulses to start assistance
-const unsigned long PAS_TIMEOUT_MS = 500; // Timeout for PAS inactivity
-const unsigned long PAS_DEBOUNCE_TIME = 2;// Debounce time in ms for PAS pulses
+const int MAGNET_COUNT = 12;                  // Number of magnets on PAS
+const int START_PULSES = 2;                   // Minimum pulses to start assistance
+const unsigned long PAS_TIMEOUT_MS = 500;     // Timeout for PAS inactivity
+const unsigned long PAS_DEBOUNCE_TIME = 2;    // Debounce time in ms for PAS pulses
 
 // Proportional Assistance
 const long MS_PER_MINUTE = 60000;
 const long MAGNET_TO_RPM_FACTOR = MS_PER_MINUTE / MAGNET_COUNT;
 const long MS_SLOW = MS_PER_MINUTE / 25 / MAGNET_COUNT; // Slow RPM period for proportional assistance
 const long MS_FAST = MS_PER_MINUTE / 65 / MAGNET_COUNT; // Fast RPM period for proportional assistance
-
-// Brake Configuration
-const int BRAKE_PIN = 3;               // Digital pin for brake signal
-bool brakeActive = false;              // Tracks whether the brake is active
-unsigned long brakeStartTime = 0;      // Timestamp when the brake was activated
 
 /**
  * END CONFIGURATION
@@ -55,16 +49,21 @@ const int PAS_PIN = 2;          // PAS input (interrupt pin)
 const int THROTTLE_PIN = A0;    // Analog pin for throttle input
 const int THROTTLE_OUT = 9;     // PWM output for throttle signal
 const int LED_PIN = 13;         // Built-in LED for status indication
+const int BRAKE_PIN = 3;        // Digital pin for brake signal
 
 // Global Variables
 volatile unsigned long lastPasPulseTime = 0; ///< Last PAS pulse time
+volatile unsigned long brakeStartTime = 0;      // Timestamp when the brake was activated
 volatile unsigned long isrOldTime = 0;       ///< Previous interrupt timestamp
 volatile unsigned int periodHigh = 0, periodLow = 0, period = 0;
 volatile unsigned int pulseCount = 0;        ///< PAS pulse count
+
 bool pedalingForward = false;                ///< Tracks pedaling direction
+bool brakeActive = false;              // Tracks whether the brake is active
+bool errorState = false;                     ///< Tracks system error state
+
 Deque<int> pwmHistory(10);                   ///< Smoothing for PAS periods
 RunningMedian throttleMedian(10);            ///< Median filter for throttle input
-bool errorState = false;                     ///< Tracks system error state
 
 /**
  * @brief Arduino setup function.
