@@ -10,6 +10,7 @@
             "includePath": [
                 "/Users/morten.broesbyolsen/hobby/ebike-arduino/include",
                 "/Users/morten.broesbyolsen/hobby/ebike-arduino/src",
+                "/Users/morten.broesbyolsen/hobby/ebike-arduino/lib/FiniteStateMachine",
                 "/Users/morten.broesbyolsen/hobby/ebike-arduino/.pio/libdeps/uno/ArduinoLog",
                 "/Users/morten.broesbyolsen/hobby/ebike-arduino/.pio/libdeps/uno/TaskScheduler/src",
                 "/Users/morten.broesbyolsen/hobby/ebike-arduino/.pio/libdeps/uno/Bounce2/src",
@@ -17,7 +18,6 @@
                 "/Users/morten.broesbyolsen/.platformio/packages/framework-arduino-avr/cores/arduino",
                 "/Users/morten.broesbyolsen/.platformio/packages/framework-arduino-avr/variants/standard",
                 "/Users/morten.broesbyolsen/hobby/ebike-arduino/lib/Deque",
-                "/Users/morten.broesbyolsen/hobby/ebike-arduino/lib/FiniteStateMachine",
                 "/Users/morten.broesbyolsen/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
                 "/Users/morten.broesbyolsen/.platformio/packages/framework-arduino-avr/libraries/HID/src",
                 "/Users/morten.broesbyolsen/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
@@ -30,6 +30,7 @@
                 "path": [
                     "/Users/morten.broesbyolsen/hobby/ebike-arduino/include",
                     "/Users/morten.broesbyolsen/hobby/ebike-arduino/src",
+                    "/Users/morten.broesbyolsen/hobby/ebike-arduino/lib/FiniteStateMachine",
                     "/Users/morten.broesbyolsen/hobby/ebike-arduino/.pio/libdeps/uno/ArduinoLog",
                     "/Users/morten.broesbyolsen/hobby/ebike-arduino/.pio/libdeps/uno/TaskScheduler/src",
                     "/Users/morten.broesbyolsen/hobby/ebike-arduino/.pio/libdeps/uno/Bounce2/src",
@@ -37,7 +38,6 @@
                     "/Users/morten.broesbyolsen/.platformio/packages/framework-arduino-avr/cores/arduino",
                     "/Users/morten.broesbyolsen/.platformio/packages/framework-arduino-avr/variants/standard",
                     "/Users/morten.broesbyolsen/hobby/ebike-arduino/lib/Deque",
-                    "/Users/morten.broesbyolsen/hobby/ebike-arduino/lib/FiniteStateMachine",
                     "/Users/morten.broesbyolsen/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
                     "/Users/morten.broesbyolsen/.platformio/packages/framework-arduino-avr/libraries/HID/src",
                     "/Users/morten.broesbyolsen/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
